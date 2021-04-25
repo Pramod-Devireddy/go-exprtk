@@ -4,7 +4,9 @@ package exprtk
 // #cgo LDFLAGS: -L.
 // #include "exprtkwrapper.h"
 import "C"
-import "fmt"
+import (
+	"errors"
+)
 
 // GoExprtk ...Exprtk Structure
 type GoExprtk struct {
@@ -60,13 +62,12 @@ func (obj GoExprtk) SetVectorVariableValue(varName string, val []float64) {
 }
 
 // CompileExpression ... Compiles the Expression
-func (obj GoExprtk) CompileExpression() {
+func (obj GoExprtk) CompileExpression() error {
 	value := C.compileExpression(obj.exprtk)
 	if value == 0 {
-		fmt.Println("Equation didn't compile")
-	} else {
-		fmt.Println("Equation Compiled")
+		return errors.New("Failed to compile the expression")
 	}
+	return nil
 }
 
 // GetEvaluatedValue ... Returns the evaluated value
