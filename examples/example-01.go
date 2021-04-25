@@ -18,7 +18,11 @@ func main() {
 	exprtkObj.AddDoubleVariable("y")
 
 	// Compile the expression after expression and variables declaration
-	exprtkObj.CompileExpression()
+	err := exprtkObj.CompileExpression()
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
 
 	// Set values for the variables
 	exprtkObj.SetDoubleVariableValue("x", 18)
