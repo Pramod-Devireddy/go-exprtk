@@ -2,7 +2,13 @@
     <h1 align="center"> Go Mathematical Expression Toolkit</h1>
 </p>
 
-The Go Expression Toolkit (Go-ExprTk) is a wrapper library based on C++ Mathematical Expression Toolkit Library ([ExprTk](http://www.partow.net/programming/exprtk/)). It is a simple to use, easy to integrate and extremely efficient run-time mathematical expression parser and evaluation engine. Go-ExprTk supports numerous forms of functional, logical and vector processing semantics and is very easily extendible.
+[![Go Report Card](https://goreportcard.com/badge/github.com/Pramod-Devireddy/go-exprtk)](https://goreportcard.com/report/github.com/Pramod-Devireddy/go-exprtk)
+
+The Go Expression Toolkit (Go-ExprTk) is a wrapper library based on C++ Mathematical Expression Toolkit Library ([ExprTk](http://www.partow.net/programming/exprtk/)).
+
+It is a simple to use, easy to integrate and extremely efficient run-time mathematical expression parser and evaluation engine.
+
+Go-ExprTk supports numerous forms of functional, logical and vector processing semantics and is very easily extendible.
 
 ## Installation
 
@@ -85,3 +91,6 @@ The Go-ExprTk library has the following capabilities:
 ## ❤️ Credits
 
 This module could not be possible without the [ExprTk](http://www.partow.net/programming/exprtk/) library by [Arash Partow](https://github.com/ArashPartow) and the idea of creating the wrapper module by [Narayana Rao G S](https://twitter.com/narayanraogs)
+
+
+Published under MIT License

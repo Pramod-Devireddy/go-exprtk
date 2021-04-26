@@ -65,7 +65,7 @@ func (obj GoExprtk) SetVectorVariableValue(varName string, val []float64) {
 func (obj GoExprtk) CompileExpression() error {
 	value := C.compileExpression(obj.exprtk)
 	if value == 0 {
-		return errors.New("Failed to compile the expression")
+		return errors.New("failed to compile the expression")
 	}
 	return nil
 }

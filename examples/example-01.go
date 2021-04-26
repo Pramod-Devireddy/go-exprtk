@@ -6,7 +6,7 @@ import (
 	"github.com/Pramod-Devireddy/go-exprtk"
 )
 
-func main() {
+func example01() {
 	// Create a new exprtk instance
 	exprtkObj := exprtk.NewExprtk()
 
