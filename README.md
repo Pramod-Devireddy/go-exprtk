@@ -2,7 +2,22 @@
     <h1 align="center"> Go Mathematical Expression Toolkit</h1>
 </p>
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/Pramod-Devireddy/go-exprtk)](https://goreportcard.com/report/github.com/Pramod-Devireddy/go-exprtk)
+<p align="center">
+  <a href="https://godoc.org/github.com/Pramod-Devireddy/go-exprtk">
+  	<img src="https://godoc.org/github.com/Pramod-Devireddy/go-exprtk?status.svg" alt="Go Doc Reference">
+  </a>
+  <a href="https://travis-ci.com/Pramod-Devireddy/go-exprtk">
+  <img src="https://www.travis-ci.com/Pramod-Devireddy/go-exprtk.svg?branch=main" alt="Build Status">
+  </a>
+  <a href="https://codecov.io/gh/Pramod-Devireddy/go-exprtk">
+  	<img src="https://codecov.io/gh/Pramod-Devireddy/go-exprtk/branch/main/graph/badge.svg?token=9pNExL9yZt"/>
+  </a>
+  <a href="https://goreportcard.com/report/github.com/Pramod-Devireddy/go-exprtk">
+  	<img src="https://goreportcard.com/badge/github.com/Pramod-Devireddy/go-exprtk" alt="Go Report Card">
+  </a>
+</p>
+
+
 
 The Go Expression Toolkit (Go-ExprTk) is a wrapper library based on C++ Mathematical Expression Toolkit Library ([ExprTk](http://www.partow.net/programming/exprtk/)).
 
