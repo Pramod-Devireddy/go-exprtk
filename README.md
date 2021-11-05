@@ -44,6 +44,7 @@ import (
 
 func main() {
 	exprtkObj := exprtk.NewExprtk()
+	defer exprtkObj.Delete()
 
 	exprtkObj.SetExpression("(x + 2)*(y-2)")
 

@@ -9,6 +9,7 @@ import (
 
 func TestNewExprtk(t *testing.T) {
 	exprtkObj := NewExprtk()
+	defer exprtkObj.Delete()
 
 	if reflect.TypeOf(exprtkObj).String() != "exprtk.GoExprtk" {
 		t.Error("NewExprtk returned incorrect type")
@@ -17,6 +18,7 @@ func TestNewExprtk(t *testing.T) {
 
 func TestCompileExpression(t *testing.T) {
 	exprtkObj := NewExprtk()
+	defer exprtkObj.Delete()
 
 	exprtkObj.SetExpression("x.1 + y.1")
 
@@ -41,6 +43,7 @@ func TestCompileExpression(t *testing.T) {
 
 func TestDoubleVariables(t *testing.T) {
 	exprtkObj := NewExprtk()
+	defer exprtkObj.Delete()
 
 	exprtkObj.SetExpression("(x + 2)*(y-2)")
 
@@ -74,6 +77,8 @@ func TestMixedVariables(t *testing.T) {
 	var array []float64 = []float64{1, 2, 3, -4.3, 10, -6.5, 7, 8, -1.3}
 
 	exprtkObj := NewExprtk()
+	defer exprtkObj.Delete()
+
 	exprtkObj.SetExpression(eqn)
 	exprtkObj.AddStringVariable("eqn")
 	exprtkObj.AddVectorVariable("x")

@@ -140,3 +140,8 @@ void addVectorVariable(exprtkWrapper obj, char* var)
     exprtkStruct->vectorValue.push_back(v);
     exprtkStruct->symbolTable.add_vector(v->varName,v->value);
 }
+
+void deleteExprtk(exprtkWrapper obj)
+{
+    delete (ExprtkStruct*)obj;
+}

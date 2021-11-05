@@ -9,6 +9,7 @@ import (
 func example01() {
 	// Create a new exprtk instance
 	exprtkObj := exprtk.NewExprtk()
+	defer exprtkObj.Delete()
 
 	// Set the expression
 	exprtkObj.SetExpression("(x + 2)*(y-2)")

@@ -29,6 +29,8 @@ void setVectorVariableValue(exprtkWrapper, char* var, double val[], int len);
 
 double getEvaluatedValue(exprtkWrapper);
 
+void deleteExprtk(exprtkWrapper);
+
 
 #ifdef __cplusplus
 }

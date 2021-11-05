@@ -19,6 +19,8 @@ func example02() {
 	var array []float64 = []float64{1, 2, 3, -4.3, 10, -6.5, 7, 8, -1.3}
 
 	exprtkObj := exprtk.NewExprtk()
+	defer exprtkObj.Delete()
+
 	exprtkObj.SetExpression(eqn)
 	exprtkObj.AddStringVariable("eqn")
 	exprtkObj.AddVectorVariable("x")

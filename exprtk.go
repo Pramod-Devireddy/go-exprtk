@@ -74,3 +74,8 @@ func (obj GoExprtk) CompileExpression() error {
 func (obj GoExprtk) GetEvaluatedValue() float64 {
 	return float64(C.getEvaluatedValue(obj.exprtk))
 }
+
+// Delete ... Destroys the created object and releases the memory
+func (obj GoExprtk) Delete() {
+	C.deleteExprtk(obj.exprtk)
+}
