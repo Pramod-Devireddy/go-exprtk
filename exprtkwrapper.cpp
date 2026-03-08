@@ -56,8 +56,8 @@ int compileExpression(exprtkWrapper obj)
 
     exprtkStruct->symbolTable.add_constants();
     exprtkStruct->expression.register_symbol_table(exprtkStruct->symbolTable);
-    bool compiled = exprtkStruct->parser.compile(exprtkStruct->exprString, exprtkStruct->expression);
-    if (compiled){
+    bool result = exprtkStruct->parser.compile(exprtkStruct->exprString, exprtkStruct->expression);
+    if (result){
         return 1;
     }else{
         return 0;
