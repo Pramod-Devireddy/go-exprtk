@@ -2,66 +2,85 @@ package exprtk
 
 // #cgo CXXFLAGS: -flto -fuse-linker-plugin -std=c++11
 // #cgo LDFLAGS: -L.
+// #include <stdlib.h>
 // #include "exprtkwrapper.h"
 import "C"
 import (
 	"errors"
+	"unsafe"
 )
 
-// GoExprtk ...Exprtk Structure
+// GoExprtk is the main struct that wraps the C++ ExprTk library.
 type GoExprtk struct {
 	exprtk C.exprtkWrapper
 }
 
-// NewExprtk ... Creates a new object
+// NewExprtk creates a new ExprTk instance.
 func NewExprtk() GoExprtk {
 	var obj GoExprtk
 	obj.exprtk = C.exprtkWrapperInit()
 	return obj
 }
 
-// SetExpression ... Sets an Expression
+// SetExpression sets the mathematical expression string to be evaluated.
 func (obj GoExprtk) SetExpression(expr string) {
-	C.setExpressionString(obj.exprtk, C.CString(expr))
+	cstr := C.CString(expr)
+	defer C.free(unsafe.Pointer(cstr))
+	C.setExpressionString(obj.exprtk, cstr)
 }
 
-// AddDoubleVariable ... Adds variable to the expression
+// AddDoubleVariable registers a numeric (double) variable for use in expressions.
 func (obj GoExprtk) AddDoubleVariable(x string) {
-	C.addDoubleVariable(obj.exprtk, C.CString(x))
+	cstr := C.CString(x)
+	defer C.free(unsafe.Pointer(cstr))
+	C.addDoubleVariable(obj.exprtk, cstr)
 }
 
-// AddStringVariable ... Adds variable to the expression
+// AddStringVariable registers a string variable for use in expressions.
 func (obj GoExprtk) AddStringVariable(x string) {
-	C.addStringVariable(obj.exprtk, C.CString(x))
+	cstr := C.CString(x)
+	defer C.free(unsafe.Pointer(cstr))
+	C.addStringVariable(obj.exprtk, cstr)
 }
 
-// AddVectorVariable ... Adds variable to the expression
+// AddVectorVariable registers a vector variable for use in expressions.
 func (obj GoExprtk) AddVectorVariable(x string) {
-	C.addVectorVariable(obj.exprtk, C.CString(x))
+	cstr := C.CString(x)
+	defer C.free(unsafe.Pointer(cstr))
+	C.addVectorVariable(obj.exprtk, cstr)
 }
 
-// SetDoubleVariableValue ... Sets value to the variable
+// SetDoubleVariableValue sets the value of a previously registered double variable.
 func (obj GoExprtk) SetDoubleVariableValue(varName string, val float64) {
-	C.setDoubleVariableValue(obj.exprtk, C.CString(varName), C.double(val))
+	cstr := C.CString(varName)
+	defer C.free(unsafe.Pointer(cstr))
+	C.setDoubleVariableValue(obj.exprtk, cstr, C.double(val))
 }
 
-// SetStringVariableValue ... Sets value to the variable
+// SetStringVariableValue sets the value of a previously registered string variable.
 func (obj GoExprtk) SetStringVariableValue(varName string, val string) {
-	C.setStringVariableValue(obj.exprtk, C.CString(varName), C.CString(val))
+	cName := C.CString(varName)
+	defer C.free(unsafe.Pointer(cName))
+	cVal := C.CString(val)
+	defer C.free(unsafe.Pointer(cVal))
+	C.setStringVariableValue(obj.exprtk, cName, cVal)
 }
 
-// SetVectorVariableValue ... Sets value to the variable
+// SetVectorVariableValue sets the value of a previously registered vector variable.
 func (obj GoExprtk) SetVectorVariableValue(varName string, val []float64) {
-	arr := make([]C.double, 0)
+	arr := make([]C.double, len(val))
 	for i := 0; i < len(val); i++ {
-		arr = append(arr, C.double(val[i]))
+		arr[i] = C.double(val[i])
 	}
 	firstValue := &(arr[0])
 	var arrayLength C.int = C.int(len(arr))
-	C.setVectorVariableValue(obj.exprtk, C.CString(varName), firstValue, arrayLength)
+	cstr := C.CString(varName)
+	defer C.free(unsafe.Pointer(cstr))
+	C.setVectorVariableValue(obj.exprtk, cstr, firstValue, arrayLength)
 }
 
-// CompileExpression ... Compiles the Expression
+// CompileExpression compiles the expression after all variables have been registered.
+// Returns an error if the expression is invalid or cannot be compiled.
 func (obj GoExprtk) CompileExpression() error {
 	value := C.compileExpression(obj.exprtk)
 	if value == 0 {
@@ -70,12 +89,40 @@ func (obj GoExprtk) CompileExpression() error {
 	return nil
 }
 
-// GetEvaluatedValue ... Returns the evaluated value
+// GetEvaluatedValue evaluates the compiled expression and returns the result.
 func (obj GoExprtk) GetEvaluatedValue() float64 {
 	return float64(C.getEvaluatedValue(obj.exprtk))
 }
 
-// Delete ... Destroys the created object and releases the memory
+// Delete destroys the ExprTk instance and releases all associated memory.
+// Always call this when done, preferably with defer.
 func (obj GoExprtk) Delete() {
 	C.deleteExprtk(obj.exprtk)
+}
+
+// Eval is a convenience function that compiles and evaluates a mathematical expression
+// with the given variables in a single call.
+//
+// Example:
+//
+//	result, err := exprtk.Eval("(x + 2) * (y - 2)", map[string]float64{"x": 18, "y": 32})
+func Eval(expression string, vars map[string]float64) (float64, error) {
+	obj := NewExprtk()
+	defer obj.Delete()
+
+	obj.SetExpression(expression)
+
+	for name := range vars {
+		obj.AddDoubleVariable(name)
+	}
+
+	if err := obj.CompileExpression(); err != nil {
+		return 0, err
+	}
+
+	for name, val := range vars {
+		obj.SetDoubleVariableValue(name, val)
+	}
+
+	return obj.GetEvaluatedValue(), nil
 }

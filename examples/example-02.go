@@ -24,8 +24,9 @@ func example02() {
 	exprtkObj.SetExpression(eqn)
 	exprtkObj.AddStringVariable("eqn")
 	exprtkObj.AddVectorVariable("x")
-	exprtkObj.CompileExpression()
+	// Set vector values before compilation so ExprTk knows the correct size
 	exprtkObj.SetVectorVariableValue("x", array)
+	exprtkObj.CompileExpression()
 
 	eqnStr = "avg"
 	exprtkObj.SetStringVariableValue("eqn", eqnStr)

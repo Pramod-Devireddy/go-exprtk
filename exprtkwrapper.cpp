@@ -2,7 +2,7 @@
 #include "exprtk.hpp"
 #include <iostream>
 #include <vector>
-#include <unordered_map>
+#include <string>
 
 struct DoubleValue{
     std::string varName;
@@ -68,7 +68,7 @@ void setDoubleVariableValue(exprtkWrapper obj,  char* var, double val)
 {
     ExprtkStruct* exprtkStruct = (ExprtkStruct*)obj;
     std::string varName = std::string(var);
-    for (int i = 0; i < exprtkStruct->doubleValue.size();i++){
+    for (size_t i = 0; i < exprtkStruct->doubleValue.size();i++){
         if (varName.compare(exprtkStruct->doubleValue[i]->varName) == 0){
             exprtkStruct->doubleValue[i]->value = val;
             break;
@@ -81,7 +81,7 @@ void setStringVariableValue(exprtkWrapper obj,  char* var, char* val)
     ExprtkStruct* exprtkStruct = (ExprtkStruct*)obj;
     std::string varName = std::string(var);
     std::string value = std::string(val);
-     for (int i = 0; i < exprtkStruct->stringValue.size();i++){
+     for (size_t i = 0; i < exprtkStruct->stringValue.size();i++){
         if (varName.compare(exprtkStruct->stringValue[i]->varName) == 0){
             exprtkStruct->stringValue[i]->value = value;
             break;
@@ -93,17 +93,17 @@ void setVectorVariableValue(exprtkWrapper obj,  char* var, double val[], int len
 {
     ExprtkStruct* exprtkStruct = (ExprtkStruct*)obj;
     std::string varName = std::string(var);
-    for (int i = 0; i < exprtkStruct->vectorValue.size();i++){
+    for (size_t i = 0; i < exprtkStruct->vectorValue.size();i++){
         if (varName.compare(exprtkStruct->vectorValue[i]->varName) == 0){
-            exprtkStruct->vectorValue[i]->value.clear();
+            exprtkStruct->vectorValue[i]->value.resize(len);
             for (int j = 0; j < len; j++){
-                exprtkStruct->vectorValue[i]->value.push_back(double(val[j]));
+                exprtkStruct->vectorValue[i]->value[j] = val[j];
             }
             break;
         }
     }
 }
-  
+
 
 double getEvaluatedValue(exprtkWrapper obj)
 {
@@ -143,5 +143,17 @@ void addVectorVariable(exprtkWrapper obj, char* var)
 
 void deleteExprtk(exprtkWrapper obj)
 {
-    delete (ExprtkStruct*)obj;
+    ExprtkStruct* exprtkStruct = (ExprtkStruct*)obj;
+
+    for (size_t i = 0; i < exprtkStruct->doubleValue.size(); i++){
+        delete exprtkStruct->doubleValue[i];
+    }
+    for (size_t i = 0; i < exprtkStruct->stringValue.size(); i++){
+        delete exprtkStruct->stringValue[i];
+    }
+    for (size_t i = 0; i < exprtkStruct->vectorValue.size(); i++){
+        delete exprtkStruct->vectorValue[i];
+    }
+
+    delete exprtkStruct;
 }
